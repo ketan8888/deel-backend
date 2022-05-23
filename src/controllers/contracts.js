@@ -1,4 +1,5 @@
 const Models = require('../model');
+const Op = Models.Op;
 
 async function getContracts(req, res) {
 
@@ -6,9 +7,9 @@ async function getContracts(req, res) {
 
   try {
 
-    const contract = await Models.Contract.findAll({ where: { clientId: profileId, status: { $ne: 'terminated' } } });
+    const contract = await Models.Contract.findAll({ where: { clientId: profileId, status: { [Op.ne]: 'terminated' } } });
 
-    if (!contract) return res.status(404).end();
+    if (!contract) return res.status(404).json({ message: 'Contract not found' });
 
     return res.json(contract);
 
@@ -33,7 +34,7 @@ async function getContractsById(req, res) {
 
     const contract = await Models.Contract.findOne({ where: { id: contractsId, clientId: profileId } });
 
-    if (!contract) return res.status(404).end();
+    if (!contract) return res.status(404).json({ message: "Invalid Contractor id" });
 
     return res.json(contract);
 

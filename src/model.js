@@ -2,16 +2,9 @@ const Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
 
-const operatorsAliases = {
-  $eq: Op.eq,
-  $ne: Op.ne,
-  $between: Op.between,
-}
-
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: './database.sqlite3',
-  operatorsAliases,
 });
 
 class Profile extends Sequelize.Model {}
@@ -95,5 +88,6 @@ module.exports = {
   sequelize,
   Profile,
   Contract,
-  Job
+  Job,
+  Op
 };

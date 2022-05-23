@@ -41,6 +41,10 @@ async function payForJob(req, res) {
 
     if (profile.type !== 'client') return res.status(400).json({ message: 'Invalid Request' });
 
+    // const isUserHasOngoingRequest = await redis.get(profileId);
+
+    // if(isUserHasOngoingRequest) return res.status(200).json({ message: 'Already requested for payment, Please try again'});
+
     const jobDetails = await Models.Job.findOne({
       where: { id: jobId },
       include: [{
@@ -58,7 +62,9 @@ async function payForJob(req, res) {
 
     if (jobDetails.price > req.profile.balance) return res.status(400).json({ message: 'Insufficient balance in account' });
 
-    const contractor = await Models.Profile.findOne({ where: { type: 'contractor', id: jobDetails.Contract.ContractorId } })
+    const contractor = await Models.Profile.findOne({ where: { type: 'contractor', id: jobDetails.Contract.ContractorId } });
+
+    // await redis.set(profileId, { jobId }, 300) // Set value for 3 mins.
 
     dbTransaction = await Models.sequelize.transaction({ autocommit: false });
 
@@ -73,13 +79,15 @@ async function payForJob(req, res) {
 
     await dbTransaction.commit();
 
+    // await redis.delete(profileId);
+
     res.status(200).send(jobDetails);
 
   } catch (error) {
 
-    if (dbTransaction) dbTransaction.rollback();
+    if (dbTransaction) dbTransaction.rollback(); // Better handling if needed to perform more db operation
 
-    return res.status(500).json({ error: error });
+    return res.status(500).json({ error });
 
   }
 

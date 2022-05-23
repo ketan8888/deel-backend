@@ -1,3 +1,24 @@
+// What can Implement
+
+* Technologies can Use || Better user experience
+
+=> Graphql Better way to handle req & res and prevent unused data parsing in network
+=> RabbitMQ / Kafka for trigger email of job payment ( Client & contractor both get notified )
+
+* Documentation
+
+=> Swagger for Rest Documentation.
+
+Error Handling
+
+=> Implement Logger for log req & res.
+=> Implement Sentry / Slack Alert for better error handling.
+=> Implement Request limit for client requests
+
+* Security side
+
+=> Allow user to perform single request at a time using Redis (Check commented code in pay job)
+
 # DEEL BACKEND TASK
 
   

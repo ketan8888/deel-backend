@@ -1,4 +1,5 @@
 const Models = require('../model');
+const Op = Models.Op;
 
 async function bestContractors(req, res) {
 
@@ -11,7 +12,7 @@ async function bestContractors(req, res) {
       attributes: [[Models.sequelize.fn('sum', Models.sequelize.col('price')), 'total_income']],
       where: {
         paid: true,
-        paymentDate: { $between: [startDate, endDate] }
+        paymentDate: { [Op.between]: [startDate, endDate] }
       },
       include: [{
         attributes: ['ContractorId'],
@@ -53,7 +54,7 @@ async function bestClients(req, res) {
       attributes: [[Models.sequelize.fn('sum', Models.sequelize.col('price')), 'paid'], "Contract.Client.id", [Models.sequelize.literal("firstName || ' ' || lastName"), 'fullName']],
       where: {
         paid: true,
-        paymentDate: { $between: [startDate, endDate] }
+        paymentDate: { [Op.between]: [startDate, endDate] }
       },
       include: [{
         attributes: [],

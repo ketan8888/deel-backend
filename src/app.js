@@ -5,12 +5,9 @@ const morgan = require('morgan');
 const routes = require('./routes');
 const app = express();
 
-
 app.use(bodyParser.json());
 
-
 app.use(morgan('combined'))
-
 
 app.use('/api', routes);
 
